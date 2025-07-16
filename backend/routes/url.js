@@ -18,5 +18,14 @@ router.get('/shorten/:shortCode', async (req, res) => {
     await urlData.save();
     res.status(200).json(urlData);
 });
+router.put('/shorten/:shortCode', async (req, res) => {
+    const { url } = req.body;
+    const { shortCode } = req.params;
+    if (!url) return res.status(400).json({ error: 'URL is required' });
+    const updated = await Url.findOneAndUpdate({ shortCode }, { url }, { new: true });
+    if (!updated) return res.status(404).json({ error: 'Not found' });
+    res.status(200).json(updated);
+});
+
 
 module.exports = router;
