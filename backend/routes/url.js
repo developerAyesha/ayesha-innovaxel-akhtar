@@ -32,6 +32,12 @@ router.delete('/shorten/:shortCode', async (req, res) => {
     if (!deleted) return res.status(404).json({ error: 'Not found' });
     res.status(204).send();
 });
+router.get('/shorten/:shortCode/stats', async (req, res) => {
+    const { shortCode } = req.params;
+    const urlData = await Url.findOne({ shortCode });
+    if (!urlData) return res.status(404).json({ error: 'Not found' });
+    res.status(200).json(urlData);
+});
 
 
 module.exports = router;
